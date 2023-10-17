@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./requirements/nginx/
+    volumes:
+      - ./requirements/nginx/tools:/var/www/mysite
+    # ports:
+    #   # - 0.0.0.0:80:80
+    #   # - 0.0.0.0:8080:8080
