@@ -1,11 +1,28 @@
 version: '3.8'
 services:
   nginx:
-    container_name: nginx
+    image: nginx
+    container_name: nginx_c
     build:
       context: ./requirements/nginx/
     volumes:
       - ./requirements/nginx/tools:/var/www/mysite
-    # ports:
-    #   # - 0.0.0.0:80:80
-    #   # - 0.0.0.0:8080:8080
+    ports:
+      - 0.0.0.0:8080:8080
+    #   - 0.0.0.0:80:80
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb_c
+    build:
+      context: ./requirements/mariadb
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress_c
+    build:
+      context: ./requirements/wordpress/
