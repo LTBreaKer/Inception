@@ -6,10 +6,14 @@ services:
     build:
       context: ./requirements/nginx/
     volumes:
-      - ./requirements/nginx/tools:/var/www/mysite
+      - wordpress:/var/www/wordpress
     ports:
-      - 0.0.0.0:8080:8080
-    #   - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+    depends_on:
+      - wordpress
+    restart: always
+    networks:
+      - inception
 
   mariadb:
     image: mariadb
@@ -18,11 +22,90 @@ services:
       context: ./requirements/mariadb
     env_file:
       - .env
+    volumes:
+      - mariadb:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 0.0.0.0:3306:3306
+    restart: always
+    networks:
+      - inception
 
   wordpress:
     image: wordpress
     container_name: wordpress_c
     build:
       context: ./requirements/wordpress/
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/wordpress
+    ports:
+      - 0.0.0.0:9000:9000
+    depends_on:
+      - mariadb
+    restart: always
+    networks:
+      - inception
+
+  adminer:
+    image: adminer
+    container_name: adminer_c
+    build:
+      context: ./requirements/bonus/adminer
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/wordpress
+    depends_on:
+      - wordpress
+      - mariadb
+    restart: always
+    networks:
+      - inception
+
+  portainer:
+    image: portainer
+    container_name: portainer_c
+    build:
+      context: ./requirements/bonus/portainer
+    env_file:
+      - .env
+    ports:
+      - "127.0.1.1:80:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - inception
+  redis:
+    image: redis
+    container_name: redis_c
+    build:
+      context: ./requirements/bonus/redis
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/wordpress
+    restart: always
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/aharrass/data/wordpress
+      o: bind
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/aharrass/data/mariadb
+      o: bind
+
+networks:
+  inception:
+    driver: bridge
