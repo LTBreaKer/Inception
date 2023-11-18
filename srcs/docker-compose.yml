@@ -91,6 +91,34 @@ services:
       - wordpress
     networks:
       - inception
+  ftp:
+    image: ftp
+    container_name: ftp_c
+    build:
+      context: ./requirements/bonus/ftp
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/home/$FTP_USER/ftp_directory/ftp_data
+    ports:
+      - "127.0.1.15:21:21"
+    networks:
+      - inception
+  hugo:
+    image: hugo
+    container_name: hugo
+    build:
+      context: ./requirements/bonus/static_site
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "127.0.1.16:80:80"
+    networks:
+      - inception
 
 volumes:
   wordpress:

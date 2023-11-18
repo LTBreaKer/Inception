@@ -1,0 +1,34 @@
+baseURL = "http://ltb-portfolio.me"
+languageCode = "en-us"
+title = "LTB-Portfolio"
+theme = "hugo-coder"
+
+[markup.highlight]
+style = "github-dark"
+
+[params]
+  author = "LTBreaKer"
+  info = "1337 student"
+  description = "LTBreaKer's portfolio"
+  keywords = "blog,developer,personal"
+  avatarurl = "https://avatars.githubusercontent.com/u/50266951?v=4"
+  colorScheme = "dark"
+
+[[params.social]]
+  name = "Github"
+  icon = "fa fa-github fa-2x"
+  weight = 1
+  url = "https://github.com/LTBreaKer"
+[[params.social]]
+  name = "Twitter"
+  icon = "fa fa-twitter fa-2x"
+  weight = 3
+  url = "https://twitter.com/LTBreaKer"
+
+[languages.en]
+  languageName = ":uk:"
+
+[[languages.en.menu.main]]
+  name = "Projects"
+  wight = 1
+  url = "post/"

@@ -24,7 +24,7 @@ wp --allow-root core install --path=/var/www/wordpress \
     --admin_password=$WORDPRESS_ADMIN_PASSWORD \
     --admin_email=$WORDPRESS_ADMIN_EMAIL
 
-wp --allow-root user create tester tester@example.com --user_pass="1234" --path=/var/www/wordpress
+wp --allow-root user create $WORDPRESS_USER $WORDPRESS_EMAIL --user_pass="$WORDPRESS_PASSWORD" --path=/var/www/wordpress
 
 wp --allow-root config set WP_REDIS_PORT "6379" --path=/var/www/wordpress
 wp --allow-root config set WP_REDIS_HOST "redis_c" --path=/var/www/wordpress
